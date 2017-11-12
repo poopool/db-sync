@@ -16,24 +16,23 @@ pip install rethinkdb
 wget $BACKUP_DOWNLOAD_URL -O backup.tar.gz
 rethinkdb-restore backup.tar.gz -c rethinkdb:28015 --force
 
-mkdir -p /app/apl_common
+mkdir -p /app/apl-db-utils
 
 pip install https://applariat:$BB_API_KEY@bitbucket.org/applariat/apl-common/get/$BB_BRANCH.zip
 pip install https://applariat:$BB_API_KEY@bitbucket.org/applariat/apl-db-utils/get/$BB_BRANCH.zip
 
-git clone -b $BB_BRANCH https://applariat:$BB_API_KEY@bitbucket.org/applariat/apl-common.git /app/apl_common
-
+git clone -b $BB_BRANCH https://applariat:$BB_API_KEY@bitbucket.org/applariat/apl-db-utils.git /app/apl-db-utils
 export PYTHONPATH=/app
 
-cd /app/apl_common
+cd /app/apl-db-utils/db_utils
 
-echo 'Seeding DB now...'
+echo 'Syncing RethinkDB now...'
 python - <<-EOF
-PROJECT_ROOT='/app'
-from db_sync import db_sync
+PROJECT_ROOT='/app/apl-db-utils/db_utils'
+import db_sync
 db_sync.main()
 EOF
-echo 'Done Seeding DB...'
+echo 'Done Syncing RethinkDB...'
 
 sleep 10
 
