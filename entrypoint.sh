@@ -2,7 +2,7 @@
 
 BB_BRANCH=${BB_BRANCH:-master}
 RUN_TEST=${RUN_TEST}
-DOWNLOAD_URL=${DOWNLOAD_URL}
+BACKUP_DOWNLOAD_URL=${BACKUP_DOWNLOAD_URL}
 
 echo Installing required packages, this might take few moments...
 apt-get -qq update
@@ -12,7 +12,7 @@ echo Installing rethinkdb python driver
 pip install rethinkdb
 
 #Downloading and restore backupfile
-wget $DOWNLOAD_URL -O backup.tar.gz
+wget $BACKUP_DOWNLOAD_URL -O backup.tar.gz
 rethinkdb restore backup.tar.gz -c rethinkdb:28015 --force
 
 mkdir -p /app/apl_common
