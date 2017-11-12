@@ -13,7 +13,7 @@ pip install rethinkdb
 
 #Downloading and restore backupfile
 wget $BACKUP_DOWNLOAD_URL -O backup.tar.gz
-rethinkdb restore backup.tar.gz -c rethinkdb:28015 --force
+rethinkdb-restore backup.tar.gz -c rethinkdb:28015 --force
 
 mkdir -p /app/apl_common
 
@@ -29,7 +29,7 @@ cd /app/apl_common
 echo 'Seeding DB now...'
 python - <<-EOF
 PROJECT_ROOT='/app'
-import db_sync
+from db_sync import db_sync
 db_sync.main()
 EOF
 echo 'Done Seeding DB...'
