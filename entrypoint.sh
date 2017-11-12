@@ -4,17 +4,21 @@ BB_API_KEY=${BB_API_KEY}
 BB_BRANCH=${BB_BRANCH:-master}
 RUN_TEST=${RUN_TEST}
 BACKUP_DOWNLOAD_URL=${BACKUP_DOWNLOAD_URL}
+RESTORE_DB=${RESTORE_DB}
 
 echo Installing required packages, this might take few moments...
 apt-get -qq update
 apt-get -qq install openssl wget curl -y
 
-echo Installing rethinkdb python driver
-pip install rethinkdb
 
-#Downloading and restore backupfile
-wget $BACKUP_DOWNLOAD_URL -O backup.tar.gz
-rethinkdb-restore backup.tar.gz -c rethinkdb:28015 --force
+if [ $RESTORE_DB = true ]
+then
+  echo Installing rethinkdb python driver
+  pip install rethinkdb
+  #Downloading and restore backupfile
+  wget $BACKUP_DOWNLOAD_URL -O backup.tar.gz
+  rethinkdb-restore backup.tar.gz -c rethinkdb:28015 --force
+fi
 
 mkdir -p /app/apl-db-utils
 
